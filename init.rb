@@ -9,7 +9,7 @@ rescue LoadError
 end
 
 require "monk/glue"
-require "couchrest"
+require "mongo_mapper"
 require "erb"
 require "json"
 
@@ -18,10 +18,9 @@ class Main < Monk::Glue
   use Rack::Session::Cookie
 end
 
-# Connect to couchdb.
-couchdb_url = settings(:couchdb)[:url]
-COUCHDB_SERVER = CouchRest.database!(couchdb_url)
-
+# Connect to mongodb.
+MongoMapper.connection = Mongo::Connection.new(settings(:mongodb)[:host], settings(:mongodb)[:port])
+MongoMapper.database = settings(:mongodb)[:database]
 
 # Load all application files.
 Dir[root_path("app/**/*.rb")].each do |file|

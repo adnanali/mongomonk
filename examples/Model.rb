@@ -1,34 +1,19 @@
-class Article < CouchRest::ExtendedDocument
-  use_database COUCHDB_SERVER
+class Article
+  include MongoMapper::Document
+
   unique_id :slug
 
-  view_by :date, :descending => true
-  view_by :user_id, :date
-
-  view_by :tags,
-    :map => 
-      "function(doc) {
-        if (doc['couchrest-type'] == 'Article' && doc.tags) {
-          doc.tags.forEach(function(tag){
-            emit(tag, 1);
-          });
-        }
-      }",
-    :reduce => 
-      "function(keys, values, rereduce) {
-        return sum(values);
-      }"  
-
-  property :date
-  property :slug, :read_only => true
-  property :title
-  property :tags, :cast_as => ['String']
+  key :date, Date # or Time
+  key :slug, String
+  key :title, String
+  key :tags, Array
 
   timestamps!
 
-  save_callback :before, :generate_slug_from_title
+  before_save :generate_slug_from_title
+  validates_uniqueness_of :slug
 
   def generate_slug_from_title
-    self['slug'] = title.downcase.gsub(/[^a-z0-9]/,'-').squeeze('-').gsub(/^\-|\-$/,'') if new_document?
+    self['slug'] = title.downcase.gsub(/[^a-z0-9]/,'-').squeeze('-').gsub(/^\-|\-$/,'') if new?
   end
 end

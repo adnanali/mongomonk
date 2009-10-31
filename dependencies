@@ -10,5 +10,5 @@ sinatra 0.9.4 git://github.com/sinatra/sinatra.git
 spawn 0.1.2 git://github.com/soveran/spawn.git
 stories 0.1.1 (test) git://github.com/citrusbyte/stories.git
 webrat 0.5.1 (test) git://github.com/brynary/webrat.git
-couchrest 0.33 git://github.com/couchrest/couchrest.git
+mongo_mapper 0.5.7 git://github.com/jnunemaker/mongomapper.git 
 json 1.1.7 git://github.com/genki/json.git

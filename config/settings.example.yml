@@ -1,16 +1,19 @@
 defaults: &defaults
+  :mongodb:
+    :host: localhost
+    :port: 27017
  
 :development:
-  :couchdb:
-    :url: http://localhost:5984/APP_NAME_development
   <<: *defaults
+  :mongodb:
+    :database: mongo_development
   
 :test:
-  :couchdb:
-    :url: http://localhost:5984/APP_NAME_test
-    <<: *defaults
+  <<: *defaults
+  :mongodb:
+    :database: mongo_test
 
 :production:
-  :couchdb:
-    :url: http://localhost:5984/APP_NAME_production
-    <<: *defaults
+  <<: *defaults
+  :mongodb:
+    :database: mongo_production
